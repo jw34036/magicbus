@@ -23,13 +23,11 @@ import java.util.Properties;
 @RestController
 @RequestMapping(value="/mb")
 public class MagicBus {
-	private static Properties kafkaProperties;
 	private static Properties mbProperties;
 	private static Producer<String, String> kProducer;
 	private static Integer partition;
 	private static final Logger log = LoggerFactory.getLogger(MagicBus.class);
-	private static String defaultTopic;
-	
+
 	public static void main(String[] args) {
 		initializeConfig(args);
 		initializeProducer();		
@@ -117,7 +115,7 @@ public class MagicBus {
  	
  	
 	private static void initializeProducer() {
-		kafkaProperties = new Properties();
+		Properties kafkaProperties = new Properties();
 		kafkaProperties.put("bootstrap.servers", mbProperties.getProperty("kafka.server"));
 		kafkaProperties.put("acks", "all");
 		kafkaProperties.put("retries", 0);
@@ -150,8 +148,8 @@ public class MagicBus {
 			log.error(e.getMessage(),e);
 			throw new RuntimeException(e);
 		}
-		
-		defaultTopic = mbProperties.getProperty("default.topic");
+
+		String defaultTopic = mbProperties.getProperty("default.topic");
 	}
 
 }
